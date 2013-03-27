@@ -9,10 +9,35 @@
 #import "TLEvaluator.h"
 
 
-@implementation TLEvaluator
+@interface TLEvaluator ()
+- (NSArray *)elevateSampleForCount:(NSInteger)i;
+@end
 
+@implementation TLEvaluator {
+    NSArray *_sample;
+@private
+    CGFloat _mo;
+    CGFloat _d;
+}
 
-- (NSArray *)getSampleWithElementsCount:(NSInteger)elementsCount {
+@synthesize mo = _mo;
+@synthesize d  = _d;
+
+- (void)reEvaluateForCount:(NSInteger)elementsCount {
+    _sample = [self elevateSampleForCount:elementsCount];
+    _mo     = [self evaluateMOforSample:[self sample]];
+    _d      = [self evaluateDForSample:[self sample] andMO:[self mo]];
+}
+
+- (CGFloat)evaluateDForSample:(NSArray *)array andMO:(CGFloat)mo {
+    return 0;
+}
+
+- (CGFloat)evaluateMOforSample:(NSArray *)array {
+    return 0;
+}
+
+- (NSArray *)elevateSampleForCount:(NSInteger)i {
     return nil;
 }
 

@@ -20,7 +20,9 @@
 
 - (IBAction)onSampleClick:(id)sender {
     NSInteger elementsCount = [[[[self elementsCount] selectedItem] title] integerValue];
-    NSArray *array = [_evaluator getSampleWithElementsCount:elementsCount]
+    NSArray *array = [_evaluator reEvaluateForCount:elementsCount];
+
+
 }
 
 @end

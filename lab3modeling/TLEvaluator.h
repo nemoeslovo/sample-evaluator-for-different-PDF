@@ -10,7 +10,10 @@
 
 @interface TLEvaluator : NSObject
 
-+ (CGFloat)getRandomNumber:(NSInteger) mode;
+@property(nonatomic, readonly) NSArray *sample;
+@property(nonatomic, readonly) CGFloat mo;
+@property(nonatomic, readonly) CGFloat d;
 
-- (NSArray *)getSampleWithElementsCount:(NSInteger)i;
+- (void)reEvaluateForCount:(NSInteger)i;
+
 @end
