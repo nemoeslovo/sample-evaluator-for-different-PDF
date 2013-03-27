@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'lab3modeling' target in the 'lab3modeling' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
