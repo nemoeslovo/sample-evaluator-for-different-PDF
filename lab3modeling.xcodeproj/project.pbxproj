@@ -13,7 +13,24 @@
 		8B3A85BE170335E400773327 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8B3A85BC170335E400773327 /* Credits.rtf */; };
 		8B3A85C1170335E400773327 /* TLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A85C0170335E400773327 /* TLAppDelegate.m */; };
 		8B3A85C4170335E400773327 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B3A85C2170335E400773327 /* MainMenu.xib */; };
+		8B3A85CE17033AB100773327 /* TLEvaluator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A85CD17033AB100773327 /* TLEvaluator.m */; };
+		8B3A85D0170344D400773327 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3A85CF170344D400773327 /* QuartzCore.framework */; };
+		8B3A85D417035C9100773327 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3A85D317035C9100773327 /* CorePlot.framework */; };
+		8B3A85D617035D1400773327 /* CorePlot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8B3A85D317035C9100773327 /* CorePlot.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8B3A85D517035D0300773327 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8B3A85D617035D1400773327 /* CorePlot.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8B3A85AA170335E400773327 /* lab3modeling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lab3modeling.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -29,6 +46,10 @@
 		8B3A85BF170335E400773327 /* TLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TLAppDelegate.h; sourceTree = "<group>"; };
 		8B3A85C0170335E400773327 /* TLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TLAppDelegate.m; sourceTree = "<group>"; };
 		8B3A85C3170335E400773327 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		8B3A85CC17033AB100773327 /* TLEvaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLEvaluator.h; sourceTree = "<group>"; };
+		8B3A85CD17033AB100773327 /* TLEvaluator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLEvaluator.m; sourceTree = "<group>"; };
+		8B3A85CF170344D400773327 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8B3A85D317035C9100773327 /* CorePlot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CorePlot.framework; path = lab3modeling/CorePlot.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3A85D417035C9100773327 /* CorePlot.framework in Frameworks */,
+				8B3A85D0170344D400773327 /* QuartzCore.framework in Frameworks */,
 				8B3A85AE170335E400773327 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,6 +86,8 @@
 		8B3A85AC170335E400773327 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B3A85D317035C9100773327 /* CorePlot.framework */,
+				8B3A85CF170344D400773327 /* QuartzCore.framework */,
 				8B3A85AD170335E400773327 /* Cocoa.framework */,
 				8B3A85AF170335E400773327 /* Other Frameworks */,
 			);
@@ -86,6 +111,8 @@
 				8B3A85C0170335E400773327 /* TLAppDelegate.m */,
 				8B3A85C2170335E400773327 /* MainMenu.xib */,
 				8B3A85B4170335E400773327 /* Supporting Files */,
+				8B3A85CC17033AB100773327 /* TLEvaluator.h */,
+				8B3A85CD17033AB100773327 /* TLEvaluator.m */,
 			);
 			path = lab3modeling;
 			sourceTree = "<group>";
@@ -112,6 +139,7 @@
 				8B3A85A6170335E400773327 /* Sources */,
 				8B3A85A7170335E400773327 /* Frameworks */,
 				8B3A85A8170335E400773327 /* Resources */,
+				8B3A85D517035D0300773327 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -169,6 +197,7 @@
 			files = (
 				8B3A85BA170335E400773327 /* main.m in Sources */,
 				8B3A85C1170335E400773327 /* TLAppDelegate.m in Sources */,
+				8B3A85CE17033AB100773327 /* TLEvaluator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +294,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/lab3modeling\"",
+					"\"$(SRCROOT)/../../firstlab/firstLab\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "lab3modeling/lab3modeling-Prefix.pch";
 				INFOPLIST_FILE = "lab3modeling/lab3modeling-Info.plist";
@@ -277,6 +311,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/lab3modeling\"",
+					"\"$(SRCROOT)/../../firstlab/firstLab\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "lab3modeling/lab3modeling-Prefix.pch";
 				INFOPLIST_FILE = "lab3modeling/lab3modeling-Info.plist";
@@ -304,6 +343,7 @@
 				8B3A85C9170335E400773327 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
