@@ -7,15 +7,20 @@
 //
 
 #import "TLAppDelegate.h"
+#import "TLEvaluator.h"
 
-@implementation TLAppDelegate
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-
+@implementation TLAppDelegate {
+    @private
+    TLEvaluator *_evaluator;
 }
 
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    _evaluator = [[TLEvaluator alloc] init];
+}
 
-
-
+- (IBAction)onSampleClick:(id)sender {
+    NSInteger elementsCount = [[[[self elementsCount] selectedItem] title] integerValue];
+    NSArray *array = [_evaluator getSampleWithElementsCount:elementsCount]
+}
 
 @end

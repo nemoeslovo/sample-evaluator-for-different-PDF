@@ -8,15 +8,13 @@
 
 #import "TLEvaluator.h"
 
-typedef enum {
-     tlSimple
-   , tlNotSimple
-} tlRandomMode;
 
 @implementation TLEvaluator
 
-+ (CGFloat)getRandomNumber:(NSInteger) mode {
-    
+
+- (NSArray *)getSampleWithElementsCount:(NSInteger)elementsCount {
+    return nil;
 }
+
 
 @end

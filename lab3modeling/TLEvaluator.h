@@ -12,4 +12,5 @@
 
 + (CGFloat)getRandomNumber:(NSInteger) mode;
 
+- (NSArray *)getSampleWithElementsCount:(NSInteger)i;
 @end
