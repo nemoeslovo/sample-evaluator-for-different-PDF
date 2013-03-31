@@ -10,9 +10,9 @@
 
 
 @interface TLEvaluator ()
-- (CGFloat)evaluateDForSample:(NSArray *)array andMO:(CGFloat)mo;
+- (CGFloat)evaluateDForSample:(NSArray *)sample andMO:(CGFloat)mo;
 
-- (CGFloat)evaluateMOforSample:(NSArray *)array;
+- (CGFloat)evaluateMOforSample:(NSArray *)sample;
 
 - (NSArray *)elevateSampleForCount:(NSInteger)i;
 @end
@@ -33,12 +33,25 @@
     _d      = [self evaluateDForSample:[self sample] andMO:[self mo]];
 }
 
-- (CGFloat)evaluateDForSample:(NSArray *)array andMO:(CGFloat)mo {
-    return 0;
+- (CGFloat)evaluateDForSample:(NSArray *)sample andMO:(CGFloat)mo {
+    CGFloat d = 0;
+    for (NSNumber *number in sample) {
+        CGFloat part = mo - [number doubleValue];
+        d += part*part;
+    }
+
+    d /= [sample count];
+    return d;
 }
 
-- (CGFloat)evaluateMOforSample:(NSArray *)array {
-    return 0;
+- (CGFloat)evaluateMOforSample:(NSArray *)sample {
+    CGFloat mo = 0;
+    for (NSNumber *number in sample) {
+        mo += [number doubleValue];
+    }
+
+    mo /= [sample count];
+    return mo;
 }
 
 - (NSArray *)elevateSampleForCount:(NSInteger)i {
