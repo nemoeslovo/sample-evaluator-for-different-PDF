@@ -8,14 +8,21 @@
 
 #import "TLEvaluator.h"
 
+static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumber) {
+    CGFloat diff = bigNumber - smallNumber;
+    return (((CGFloat) rand() / RAND_MAX) * diff) + smallNumber;
+}
+#define randomInRange(min, max) _randomInRange(min, max)
+
 
 @interface TLEvaluator ()
+
 - (CGFloat)evaluateDForSample:(NSArray *)sample andMO:(CGFloat)mo;
-
 - (CGFloat)evaluateMOforSample:(NSArray *)sample;
+- (NSArray *)elevateSampleForCount:(NSInteger)sampleCount;
 
-- (NSArray *)elevateSampleForCount:(NSInteger)i;
 @end
+
 
 @implementation TLEvaluator {
     NSArray *_sample;
@@ -27,7 +34,20 @@
 @synthesize mo = _mo;
 @synthesize d  = _d;
 
-- (void)reEvaluateForCount:(NSInteger)elementsCount {
++ (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSRange *)range {
+    return [[self alloc] initWithPDF:pdfFunction andRange:range];
+}
+
+- (id)initWithPDF:(PdfFunction)pdfFunction andRange:(NSRange *)range {
+    self = [super init];
+    if (self) {
+        [self setRange:range];
+        [self setPdfFunction:pdfFunction];
+    }
+    return self;
+}
+
+- (void)evaluateForCount:(NSInteger)elementsCount {
     _sample = [self elevateSampleForCount:elementsCount];
     _mo     = [self evaluateMOforSample:[self sample]];
     _d      = [self evaluateDForSample:[self sample] andMO:[self mo]];
@@ -54,8 +74,14 @@
     return mo;
 }
 
-- (NSArray *)elevateSampleForCount:(NSInteger)i {
-    return nil;
+- (NSArray *)elevateSampleForCount:(NSInteger)sampleCount {
+    NSMutableArray *sample = [NSMutableArray arrayWithCapacity:sampleCount];
+    for (int i = 0; i < sampleCount; i++) {
+        CGFloat simpleRandom        = randomInRange(_range->x, _range->y);
+        CGFloat randomInRelateOfPDF = [self pdfFunction](simpleRandom);
+        sample[i] = [NSNumber numberWithFloat:randomInRelateOfPDF];
+    }
+    return sample;
 }
 
 
