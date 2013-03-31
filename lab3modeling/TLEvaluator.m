@@ -10,6 +10,10 @@
 
 
 @interface TLEvaluator ()
+- (CGFloat)evaluateDForSample:(NSArray *)array andMO:(CGFloat)mo;
+
+- (CGFloat)evaluateMOforSample:(NSArray *)array;
+
 - (NSArray *)elevateSampleForCount:(NSInteger)i;
 @end
 
