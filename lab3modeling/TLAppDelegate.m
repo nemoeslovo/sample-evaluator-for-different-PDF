@@ -25,9 +25,9 @@
     };
 
     //задаем интервал выборки
-    NSPoint *range;
-    range->x = 0;
-    range->y = M_PI_4;
+    NSPoint range;
+    range.x = 0;
+    range.y = M_PI_4;
 
     //создаем объект, содержащий все необходимые нам вычислительные функции
     _evaluator = [TLEvaluator evaluatorWithPdf:pdf andRange:range];
@@ -37,6 +37,8 @@
 - (IBAction)onSampleClick:(id)sender {
     NSInteger elementsCount = [[[[self elementsCount] selectedItem] title] integerValue];
     [_evaluator evaluateForCount:elementsCount];
+    [[self tfD]  setStringValue:[[NSNumber numberWithFloat:[_evaluator d]]  stringValue]];
+    [[self tfMO] setStringValue:[[NSNumber numberWithFloat:[_evaluator mo]] stringValue]];
 }
 
 @end

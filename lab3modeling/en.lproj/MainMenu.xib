@@ -1411,7 +1411,6 @@
 									</array>
 									<reference key="NSMenuFont" ref="487036120"/>
 								</object>
-								<int key="NSSelectedIndex">-1</int>
 								<bool key="NSPullDown">YES</bool>
 								<int key="NSPreferredEdge">1</int>
 								<bool key="NSUsesItemFromMenu">YES</bool>
@@ -1487,7 +1486,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="623903221">
 								<int key="NSCellFlags">68157504</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">Label</string>
+								<string key="NSContents">yo</string>
 								<reference key="NSSupport" ref="487036120"/>
 								<string key="NSCellIdentifier">_NS:1535</string>
 								<reference key="NSControlView" ref="747482458"/>
@@ -1601,6 +1600,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{545, 160}, {38, 17}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="961795052">

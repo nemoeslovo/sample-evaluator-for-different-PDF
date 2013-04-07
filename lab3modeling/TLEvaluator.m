@@ -34,14 +34,14 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 @synthesize mo = _mo;
 @synthesize d  = _d;
 
-+ (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSRange *)range {
++ (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSPoint)range {
     return [[self alloc] initWithPDF:pdfFunction andRange:range];
 }
 
-- (id)initWithPDF:(PdfFunction)pdfFunction andRange:(NSRange *)range {
+- (id)initWithPDF:(PdfFunction)pdfFunction andRange:(NSPoint)range {
     self = [super init];
     if (self) {
-        [self setRange:range];
+        _range = range;
         [self setPdfFunction:pdfFunction];
     }
     return self;
@@ -49,8 +49,15 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 
 - (void)evaluateForCount:(NSInteger)elementsCount {
     _sample = [self elevateSampleForCount:elementsCount];
+    [self logSample:_sample];
     _mo     = [self evaluateMOforSample:[self sample]];
     _d      = [self evaluateDForSample:[self sample] andMO:[self mo]];
+}
+
+- (void)logSample:(NSArray *)array {
+    for (int i = 0; i<[array count]; i++) {
+        NSLog(@"sample[%d] = %f", i, [array[i] floatValue]);
+    }
 }
 
 - (CGFloat)evaluateDForSample:(NSArray *)sample andMO:(CGFloat)mo {
@@ -77,7 +84,7 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 - (NSArray *)elevateSampleForCount:(NSInteger)sampleCount {
     NSMutableArray *sample = [NSMutableArray arrayWithCapacity:sampleCount];
     for (int i = 0; i < sampleCount; i++) {
-        CGFloat simpleRandom        = randomInRange(_range->x, _range->y);
+        CGFloat simpleRandom        = randomInRange(_range.x, _range.y);
         CGFloat randomInRelateOfPDF = [self pdfFunction](simpleRandom);
         sample[i] = [NSNumber numberWithFloat:randomInRelateOfPDF];
     }

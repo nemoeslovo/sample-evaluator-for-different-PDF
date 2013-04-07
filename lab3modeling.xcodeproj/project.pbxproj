@@ -17,6 +17,8 @@
 		8B3A85D0170344D400773327 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3A85CF170344D400773327 /* QuartzCore.framework */; };
 		8B3A85D417035C9100773327 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3A85D317035C9100773327 /* CorePlot.framework */; };
 		8B3A85D617035D1400773327 /* CorePlot.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8B3A85D317035C9100773327 /* CorePlot.framework */; };
+		947130E48F6224CAF06ED25B /* PlotDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94713A0F168FD3D03BC0EFBB /* PlotDelegate.h */; };
+		9471396587851EACF3F2489F /* PlotDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 947134A3082D707F3DE9DF78 /* PlotDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +29,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				8B3A85D617035D1400773327 /* CorePlot.framework in CopyFiles */,
+				947130E48F6224CAF06ED25B /* PlotDelegate.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +53,8 @@
 		8B3A85CD17033AB100773327 /* TLEvaluator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLEvaluator.m; sourceTree = "<group>"; };
 		8B3A85CF170344D400773327 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B3A85D317035C9100773327 /* CorePlot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CorePlot.framework; path = lab3modeling/CorePlot.framework; sourceTree = "<group>"; };
+		947134A3082D707F3DE9DF78 /* PlotDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlotDelegate.m; sourceTree = "<group>"; };
+		94713A0F168FD3D03BC0EFBB /* PlotDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlotDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +118,8 @@
 				8B3A85B4170335E400773327 /* Supporting Files */,
 				8B3A85CC17033AB100773327 /* TLEvaluator.h */,
 				8B3A85CD17033AB100773327 /* TLEvaluator.m */,
+				947134A3082D707F3DE9DF78 /* PlotDelegate.m */,
+				94713A0F168FD3D03BC0EFBB /* PlotDelegate.h */,
 			);
 			path = lab3modeling;
 			sourceTree = "<group>";
@@ -198,6 +205,7 @@
 				8B3A85BA170335E400773327 /* main.m in Sources */,
 				8B3A85C1170335E400773327 /* TLAppDelegate.m in Sources */,
 				8B3A85CE17033AB100773327 /* TLEvaluator.m in Sources */,
+				9471396587851EACF3F2489F /* PlotDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

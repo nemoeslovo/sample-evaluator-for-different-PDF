@@ -21,11 +21,11 @@ static const inline CGFloat _acot(CGFloat number) {
 @property(nonatomic, readonly) CGFloat     mo;
 @property(nonatomic, readonly) CGFloat     d;
 @property(nonatomic, copy)     PdfFunction pdfFunction;
-@property(nonatomic)           NSPoint     *range;
+@property(nonatomic)           NSPoint     range;
 
-+ (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSRange *)range;
++ (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSPoint)range;
 
-- (id)initWithPDF:(PdfFunction)pdfFunction andRange:(NSRange *)range;
+- (id)initWithPDF:(PdfFunction)pdfFunction andRange:(NSPoint)range;
 - (void)evaluateForCount:(NSInteger)i;
 
 @end
