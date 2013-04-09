@@ -15,13 +15,17 @@ static const inline CGFloat _acot(CGFloat number) {
 }
 #define acot(number) _acot(number)
 
-@interface TLEvaluator : NSObject
+@interface TLEvaluator : NSObject {
+    NSDictionary *__sampleGraphData;
+}
 
 @property(nonatomic, readonly) NSArray     *sample;
 @property(nonatomic, readonly) CGFloat     mo;
 @property(nonatomic, readonly) CGFloat     d;
 @property(nonatomic, copy)     PdfFunction pdfFunction;
 @property(nonatomic)           NSPoint     range;
+
+@property(nonatomic, strong) NSDictionary *_sampleGraphData;
 
 + (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSPoint)range;
 

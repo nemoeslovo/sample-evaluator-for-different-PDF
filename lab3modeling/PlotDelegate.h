@@ -7,6 +7,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class CPTGraph;
+@class CPTGraphHostingView;
+
 
 @interface PlotDelegate : NSObject
+
++ (CPTGraph *)createGraphStartX:(double)startX andStartY:(double)startY andMaxX:(double)maxX andMaxY:(double)maxY;
+
+- (id)initWithPlotView:(CPTGraphHostingView *)view;
+
++ (PlotDelegate *)plotWithPlotView:(CPTGraphHostingView *)view;
 @end

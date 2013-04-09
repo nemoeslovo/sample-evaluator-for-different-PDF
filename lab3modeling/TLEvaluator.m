@@ -48,10 +48,38 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 }
 
 - (void)evaluateForCount:(NSInteger)elementsCount {
-    _sample = [self elevateSampleForCount:elementsCount];
+    _sample           = [self elevateSampleForCount:elementsCount];
     [self logSample:_sample];
-    _mo     = [self evaluateMOforSample:[self sample]];
-    _d      = [self evaluateDForSample:[self sample] andMO:[self mo]];
+    _mo               = [self evaluateMOforSample:[self sample]];
+    _d                = [self evaluateDForSample:[self sample] andMO:[self mo]];
+    __sampleGraphData = [self formSampleGraphData:_sample];
+}
+
+- (NSDictionary *)formSampleGraphData:(NSArray *)array {
+    NSArray *sortedArray = [self sortArrayAscending:array];
+
+    NSMutableDictionary *graphData = [NSMutableDictionary dictionaryWithCapacity:[array count]];
+
+    CGFloat nu = 1/[sortedArray count];
+    CGFloat f  = nu;
+    for (NSNumber *number in sortedArray) {
+        [graphData setObject:number forKey:[NSNumber numberWithFloat:f]];
+        f += nu;
+    }
+
+    return nil;
+}
+
+- (NSArray *)sortArrayAscending:(NSArray *)_array {
+    NSArray *sorted = [_array sortedArrayUsingComparator:^(id firstObject, id secondObject) {
+        CGFloat firstNumber  = [firstObject floatValue];
+        CGFloat secondNumber = [secondObject floatValue];
+        if (firstNumber > secondNumber) {
+            return NSOrderedAscending;
+        } else {
+            return NSOrderedDescending;
+        }
+    }];
 }
 
 - (void)logSample:(NSArray *)array {

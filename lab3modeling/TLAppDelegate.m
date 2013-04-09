@@ -9,6 +9,10 @@
 #import "TLAppDelegate.h"
 #import "TLEvaluator.h"
 #import "Math.h"
+#import "PlotDelegate.h"
+
+#define MIN_Z 0
+#define MAX_Z M_PI_4
 
 @implementation TLAppDelegate {
     @private
@@ -26,12 +30,14 @@
 
     //задаем интервал выборки
     NSPoint range;
-    range.x = 0;
-    range.y = M_PI_4;
+    range.x = MIN_Z;
+    range.y = MAX_Z;
 
     //создаем объект, содержащий все необходимые нам вычислительные функции
     _evaluator = [TLEvaluator evaluatorWithPdf:pdf andRange:range];
 
+    //инициализация graphView
+    PlotDelegate *plotDelegate = [PlotDelegate plotWithPlotView:_plotView];
 }
 
 - (IBAction)onSampleClick:(id)sender {
