@@ -17,9 +17,8 @@
 @implementation TLAppDelegate {
     @private
     TLEvaluator *_evaluator;
+    PlotDelegate *_plotDelegate;
 }
-
-@synthesize plotDelegate = _plotDelegate;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 
@@ -48,7 +47,7 @@
     [[self tfD]  setStringValue:[[NSNumber numberWithFloat:[_evaluator d]]  stringValue]];
     [[self tfMO] setStringValue:[[NSNumber numberWithFloat:[_evaluator mo]] stringValue]];
     [_plotDelegate addPlot:[_evaluator sampleGraphData]];
-    [[self plotDelegate] redraw];
+    [_plotDelegate redraw];
 }
 
 @end

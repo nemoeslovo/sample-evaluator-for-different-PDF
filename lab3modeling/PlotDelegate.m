@@ -7,17 +7,18 @@
 
 #import <CorePlot/CorePlot.h>
 #import "PlotDelegate.h"
+#import <CorePlot/CPTGraphHostingView.h>
 
 #define RED    [CPTColor colorWithComponentRed:1.0 green:0.0 blue:0.0 alpha:1.0]
 
 
 @implementation PlotDelegate {
     @private
-    CPTGraphHostingView *_graphView;
     NSMutableDictionary *_plots;
     NSInteger plotsCount;
 }
 
+@synthesize graphView = _graphView;
 
 + (PlotDelegate *)plotWithPlotView:(CPTGraphHostingView *)view {
     return [[self alloc] initWithPlotView:view];
@@ -26,8 +27,11 @@
 - (id)initWithPlotView:(CPTGraphHostingView *)view {
     self = [super init];
     if (self) {
-        _graphView = view;
-        [_graphView setHostedGraph:[self createGraphStartX:0 andStartY:0 andMaxX:0 andMaxY:0]];
+        CPTGraph *graph = [self createGraphStartX:0 andStartY:0 andMaxX:0 andMaxY:0];
+        [view setHostedGraph:graph];
+        
+        [self setGraphView:(CPTGraphHostingView *)view];
+        
         plotsCount = 0;
         _plots = [NSMutableDictionary dictionary];
     }

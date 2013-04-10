@@ -65,6 +65,7 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     for (NSNumber *number in sortedArray) {
         NSArray *point = [NSArray arrayWithObjects:number, [NSNumber numberWithFloat:f], nil];
         f += nu;
+        [graphData addObject:point];
     }
 
     return graphData;

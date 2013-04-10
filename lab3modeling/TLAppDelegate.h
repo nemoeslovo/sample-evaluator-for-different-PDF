@@ -12,14 +12,13 @@
 @class PlotDelegate;
 
 @interface TLAppDelegate : NSObject <NSApplicationDelegate>
+@property (weak) IBOutlet CPTGraphHostingView *plotView;
 
-@property (assign) IBOutlet NSWindow        *window;
-@property IBOutlet CPTGraphHostingView      *plotView;
-@property (weak) IBOutlet NSPopUpButtonCell *elementsCount;
-@property (weak) IBOutlet NSTextField       *tfMO;
-@property (weak) IBOutlet NSTextField       *tfD;
+@property (assign) IBOutlet NSWindow            *window;
 
-@property(nonatomic, strong) PlotDelegate *plotDelegate;
+@property (weak)   IBOutlet NSPopUpButtonCell   *elementsCount;
+@property (weak)   IBOutlet NSTextField         *tfMO;
+@property (weak)   IBOutlet NSTextField         *tfD;
 
 - (IBAction)onSampleClick:(id)sender;
 

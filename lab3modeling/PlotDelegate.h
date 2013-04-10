@@ -6,14 +6,16 @@
 
 
 #import <Foundation/Foundation.h>
+#import <CorePlot/CPTGraphHostingView.h>
 
 @class CPTGraph;
-@class CPTGraphHostingView;
 
 
 @interface PlotDelegate : NSObject <CPTPlotDataSource>
 
-+ (CPTGraph *)createGraphStartX:(double)startX andStartY:(double)startY andMaxX:(double)maxX andMaxY:(double)maxY;
+@property (unsafe_unretained) CPTGraphHostingView *graphView;
+
+- (CPTGraph *)createGraphStartX:(double)startX andStartY:(double)startY andMaxX:(double)maxX andMaxY:(double)maxY;
 
 - (void)addPlot:(NSArray *)plotData;
 
