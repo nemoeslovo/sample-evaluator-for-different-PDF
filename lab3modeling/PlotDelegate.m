@@ -27,10 +27,10 @@
 - (id)initWithPlotView:(CPTGraphHostingView *)view {
     self = [super init];
     if (self) {
-        CPTGraph *graph = [self createGraphStartX:0 andStartY:0 andMaxX:0 andMaxY:0];
+        CPTGraph *graph = [self createGraphStartX:-1 andStartY:-1 andMaxX:4 andMaxY:3];
         [view setHostedGraph:graph];
         
-        [self setGraphView:(CPTGraphHostingView *)view];
+        [self setGraphView:view];
         
         plotsCount = 0;
         _plots = [NSMutableDictionary dictionary];
@@ -64,6 +64,7 @@
     axis.xAxis.majorIntervalLength         = CPTDecimalFromString([NSString stringWithFormat:@"%f", maxX / 10]);
 
     [axis.yAxis.labelFormatter setMaximumFractionDigits:5];
+    [graph setDelegate:self];
     [axis.xAxis.labelFormatter setMaximumFractionDigits:5];
 
     return graph;
@@ -71,7 +72,7 @@
 
 - (void)addPlot:(NSArray *)plotData {
     NSNumber *plotIdentificator = [NSNumber numberWithInt:plotsCount];
-    [_plots setObject:plotData forKey:[NSNumber numberWithInt:plotIdentificator]];
+    [_plots setObject:plotData forKey:plotIdentificator];
     [[_graphView hostedGraph] addPlot:[self createPlotWithIdentifier:plotIdentificator
                                                             andColor:RED]];
     plotsCount++;
@@ -105,10 +106,12 @@
                       field:(NSUInteger)fieldEnum
                 recordIndex:(NSUInteger)index {
 
-    NSArray *plotData = [_plots objectForKey:[plot identifier]];
+    NSNumber *plotIdentifer = [plot identifier];
+    NSArray *plotData = [_plots objectForKey:plotIdentifer];
 
-    NSArray *point =  plotData[index];
-    return point[fieldEnum];
+    NSArray  *point  = plotData[index];
+    NSNumber *result = point[fieldEnum];
+    return result;
 }
 
 

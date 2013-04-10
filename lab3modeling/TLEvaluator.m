@@ -60,7 +60,7 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 
     NSMutableArray *graphData = [NSMutableArray array];
 
-    CGFloat nu = 1/[sortedArray count];
+    CGFloat nu = 1/(CGFloat)[sortedArray count];
     CGFloat f  = nu;
     for (NSNumber *number in sortedArray) {
         NSArray *point = [NSArray arrayWithObjects:number, [NSNumber numberWithFloat:f], nil];
