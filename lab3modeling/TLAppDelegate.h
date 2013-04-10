@@ -9,6 +9,8 @@
 #import <Cocoa/Cocoa.h>
 #import <CorePlot/CorePlot.h>
 
+@class PlotDelegate;
+
 @interface TLAppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow        *window;
@@ -16,6 +18,8 @@
 @property (weak) IBOutlet NSPopUpButtonCell *elementsCount;
 @property (weak) IBOutlet NSTextField       *tfMO;
 @property (weak) IBOutlet NSTextField       *tfD;
+
+@property(nonatomic, strong) PlotDelegate *plotDelegate;
 
 - (IBAction)onSampleClick:(id)sender;
 

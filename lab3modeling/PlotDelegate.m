@@ -8,12 +8,35 @@
 #import <CorePlot/CorePlot.h>
 #import "PlotDelegate.h"
 
+#define RED    [CPTColor colorWithComponentRed:1.0 green:0.0 blue:0.0 alpha:1.0]
+
 
 @implementation PlotDelegate {
     @private
     CPTGraphHostingView *_graphView;
+    NSMutableDictionary *_plots;
+    NSInteger plotsCount;
 }
 
+
++ (PlotDelegate *)plotWithPlotView:(CPTGraphHostingView *)view {
+    return [[self alloc] initWithPlotView:view];
+}
+
+- (id)initWithPlotView:(CPTGraphHostingView *)view {
+    self = [super init];
+    if (self) {
+        _graphView = view;
+        [_graphView setHostedGraph:[self createGraphStartX:0 andStartY:0 andMaxX:0 andMaxY:0]];
+        plotsCount = 0;
+        _plots = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
+- (id)init {
+    return [self initWithPlotView:nil];
+}
 
 - (CPTGraph *)createGraphStartX:(double)startX
                       andStartY:(double)startY
@@ -42,21 +65,46 @@
     return graph;
 }
 
-- (id)initWithPlotView:(CPTGraphHostingView *)view {
-    self = [super init];
-    if (self) {
-        _graphView = view;
-        [_graphView setHostedGraph:[self createGraphStartX:0 andStartY:0 andMaxX:0 andMaxY:0]];
-    }
-    return self;
+- (void)addPlot:(NSArray *)plotData {
+    NSNumber *plotIdentificator = [NSNumber numberWithInt:plotsCount];
+    [_plots setObject:plotData forKey:[NSNumber numberWithInt:plotIdentificator]];
+    [[_graphView hostedGraph] addPlot:[self createPlotWithIdentifier:plotIdentificator
+                                                            andColor:RED]];
+    plotsCount++;
 }
 
-- (void)addPlot:(NSDictionary *)plotData {
-    
+- (CPTScatterPlot *)createPlotWithIdentifier:(id)ident
+                                    andColor:(CPTColor *)color {
+    CPTScatterPlot *plot = [[CPTScatterPlot alloc] init];
+
+    plot.dataSource = self;
+    plot.identifier = ident;
+    plot.interpolation = CPTScatterPlotInterpolationCurved;
+
+    CPTMutableLineStyle *lineStyle = [plot.dataLineStyle mutableCopy];
+    lineStyle.lineColor = color;
+    lineStyle.lineWidth = 2.0;
+    plot.dataLineStyle = lineStyle;
+    return plot;
 }
 
-+ (PlotDelegate *)plotWithPlotView:(CPTGraphHostingView *)view {
-    return [[self alloc] initWithPlotView:view];
+
+- (void)redraw {
+    [[_graphView hostedGraph] reloadData];
+}
+
+- (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
+    return 10;
+}
+
+- (NSNumber *)numberForPlot:(CPTPlot *)plot
+                      field:(NSUInteger)fieldEnum
+                recordIndex:(NSUInteger)index {
+
+    NSArray *plotData = [_plots objectForKey:[plot identifier]];
+
+    NSArray *point =  plotData[index];
+    return point[fieldEnum];
 }
 
 

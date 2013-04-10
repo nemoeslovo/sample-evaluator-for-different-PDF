@@ -52,22 +52,22 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     [self logSample:_sample];
     _mo               = [self evaluateMOforSample:[self sample]];
     _d                = [self evaluateDForSample:[self sample] andMO:[self mo]];
-    __sampleGraphData = [self formSampleGraphData:_sample];
+    _sampleGraphData  = [self formSampleGraphData:_sample];
 }
 
-- (NSDictionary *)formSampleGraphData:(NSArray *)array {
+- (NSArray *)formSampleGraphData:(NSArray *)array {
     NSArray *sortedArray = [self sortArrayAscending:array];
 
-    NSMutableDictionary *graphData = [NSMutableDictionary dictionaryWithCapacity:[array count]];
+    NSMutableArray *graphData = [NSMutableArray array];
 
     CGFloat nu = 1/[sortedArray count];
     CGFloat f  = nu;
     for (NSNumber *number in sortedArray) {
-        [graphData setObject:number forKey:[NSNumber numberWithFloat:f]];
+        NSArray *point = [NSArray arrayWithObjects:number, [NSNumber numberWithFloat:f], nil];
         f += nu;
     }
 
-    return nil;
+    return graphData;
 }
 
 - (NSArray *)sortArrayAscending:(NSArray *)_array {
@@ -75,11 +75,13 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
         CGFloat firstNumber  = [firstObject floatValue];
         CGFloat secondNumber = [secondObject floatValue];
         if (firstNumber > secondNumber) {
-            return NSOrderedAscending;
-        } else {
             return NSOrderedDescending;
+        } else {
+            return NSOrderedAscending;
         }
     }];
+    [self logSample:sorted];
+    return sorted;
 }
 
 - (void)logSample:(NSArray *)array {

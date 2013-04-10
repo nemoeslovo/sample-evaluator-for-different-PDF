@@ -11,11 +11,16 @@
 @class CPTGraphHostingView;
 
 
-@interface PlotDelegate : NSObject
+@interface PlotDelegate : NSObject <CPTPlotDataSource>
 
 + (CPTGraph *)createGraphStartX:(double)startX andStartY:(double)startY andMaxX:(double)maxX andMaxY:(double)maxY;
+
+- (void)addPlot:(NSArray *)plotData;
+
+- (void)redraw;
 
 - (id)initWithPlotView:(CPTGraphHostingView *)view;
 
 + (PlotDelegate *)plotWithPlotView:(CPTGraphHostingView *)view;
+
 @end

@@ -19,6 +19,8 @@
     TLEvaluator *_evaluator;
 }
 
+@synthesize plotDelegate = _plotDelegate;
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 
     //задаем предварительно расчитанную функцию плотности распределения
@@ -37,7 +39,7 @@
     _evaluator = [TLEvaluator evaluatorWithPdf:pdf andRange:range];
 
     //инициализация graphView
-    PlotDelegate *plotDelegate = [PlotDelegate plotWithPlotView:_plotView];
+    _plotDelegate = [PlotDelegate plotWithPlotView:_plotView];
 }
 
 - (IBAction)onSampleClick:(id)sender {
@@ -45,6 +47,8 @@
     [_evaluator evaluateForCount:elementsCount];
     [[self tfD]  setStringValue:[[NSNumber numberWithFloat:[_evaluator d]]  stringValue]];
     [[self tfMO] setStringValue:[[NSNumber numberWithFloat:[_evaluator mo]] stringValue]];
+    [_plotDelegate addPlot:[_evaluator sampleGraphData]];
+    [[self plotDelegate] redraw];
 }
 
 @end
