@@ -46,8 +46,8 @@
     [_evaluator evaluateForCount:elementsCount];
     [[self tfD]  setStringValue:[[NSNumber numberWithFloat:[_evaluator d]]  stringValue]];
     [[self tfMO] setStringValue:[[NSNumber numberWithFloat:[_evaluator mo]] stringValue]];
-    [_plotDelegate addPlot:[_evaluator sampleGraphData]];
     [_plotDelegate redraw];
+    [_plotDelegate addPlot:[_evaluator sampleGraphData]];
 }
 
 @end

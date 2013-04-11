@@ -95,7 +95,9 @@
 
 
 - (void)redraw {
-    [[_graphView hostedGraph] reloadData];
+    for (int i = 0; i < plotsCount; i++) {
+        [[_graphView hostedGraph] removePlotWithIdentifier:[NSNumber numberWithInt:i]];
+    }
 }
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
