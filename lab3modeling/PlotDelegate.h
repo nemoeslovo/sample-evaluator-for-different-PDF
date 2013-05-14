@@ -24,6 +24,8 @@
 
 - (void)addPlot:(NSArray *)plotData withColor:(CPTColor *)_color;
 
+- (void)addPlot:(NSArray *)plotData withColor:(CPTColor *)_color isStepped:(BOOL)_isStepped;
+
 - (void)cleenup;
 
 - (id)initWithPlotView:(CPTGraphHostingView *)view;

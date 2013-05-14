@@ -81,20 +81,45 @@
 }
 
 - (void)addPlot:(NSArray *)plotData withColor:(CPTColor *)_color {
+    [self addPlot:plotData
+        withColor:_color
+        isStepped:YES];
+}
+
+- (void)addPlot:(NSArray *)plotData
+      withColor:(CPTColor *)_color
+      isStepped:(BOOL)_isStepped {
+
     NSNumber *plotIdentificator = [NSNumber numberWithInt:plotsCount];
     [_plots setObject:plotData forKey:plotIdentificator];
+
+    /*
+    * если нам нужен гафик ступеньками, выбираем гистограмму
+    * */
+    CPTScatterPlotInterpolation interpolation = CPTScatterPlotInterpolationHistogram;
+
+    /*
+    * иначе сглаживаем
+    * */
+    if (!_isStepped) {
+        interpolation = CPTScatterPlotInterpolationCurved;
+    }
+
     [[_graphView hostedGraph] addPlot:[self createPlotWithIdentifier:plotIdentificator
-                                                            andColor:_color]];
+                                                            andColor:_color
+                                                   withInterpolation:interpolation]];
     plotsCount++;
 }
 
+
 - (CPTScatterPlot *)createPlotWithIdentifier:(id)ident
-                                    andColor:(CPTColor *)color {
+                                    andColor:(CPTColor *)color
+                           withInterpolation:(CPTScatterPlotInterpolation)_interpolation {
     CPTScatterPlot *plot = [[CPTScatterPlot alloc] init];
 
     plot.dataSource    = self;
     plot.identifier    = ident;
-    plot.interpolation = CPTScatterPlotInterpolationStepped;
+    plot.interpolation = _interpolation;
 
     CPTMutableLineStyle *lineStyle = [plot.dataLineStyle mutableCopy];
     lineStyle.lineColor = color;
