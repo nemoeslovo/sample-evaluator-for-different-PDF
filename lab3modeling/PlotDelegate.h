@@ -8,6 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <CorePlot/CPTGraphHostingView.h>
 
+#define RED    [CPTColor colorWithComponentRed:1.0 green:0.0 blue:0.0 alpha:1.0]
+#define GREEN  [CPTColor colorWithComponentRed:0.0 green:1.0 blue:0.0 alpha:1.0]
+#define BLUE   [CPTColor colorWithComponentRed:0.2 green:0.2 blue:0.8 alpha:1.0]
+
+
 @class CPTGraph;
 
 
@@ -17,9 +22,9 @@
 
 - (CPTGraph *)createGraphStartX:(double)startX andStartY:(double)startY andMaxX:(double)maxX andMaxY:(double)maxY;
 
-- (void)addPlot:(NSArray *)plotData;
+- (void)addPlot:(NSArray *)plotData withColor:(CPTColor *)_color;
 
-- (void)redraw;
+- (void)cleenup;
 
 - (id)initWithPlotView:(CPTGraphHostingView *)view;
 

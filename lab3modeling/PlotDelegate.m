@@ -9,9 +9,6 @@
 #import "PlotDelegate.h"
 #import <CorePlot/CPTGraphHostingView.h>
 
-#define RED    [CPTColor colorWithComponentRed:1.0 green:0.0 blue:0.0 alpha:1.0]
-
-
 @implementation PlotDelegate {
     @private
     NSMutableDictionary *_plots;
@@ -27,11 +24,24 @@
 - (id)initWithPlotView:(CPTGraphHostingView *)view {
     self = [super init];
     if (self) {
-        CPTGraph *graph = [self createGraphStartX:-1 andStartY:-1 andMaxX:4 andMaxY:3];
+        /*
+        * странные мэджики для задания изначальной видимости
+        * графика. ТОДО: убрать хардкод
+        * */
+        CPTGraph *graph = [self createGraphStartX:1.42 andStartY:-0.3 andMaxX:0.7 andMaxY:1.5];
+
+        /*
+        * выравниваем координатные оси, чтобы они были видны не в
+        * зависимости от видимой части графика - одна снизу
+        * и другая, конечно же, слева
+        * */
+        [[(CPTXYAxisSet *) [graph axisSet] yAxis] setAxisConstraints:[CPTConstraints constraintWithLowerOffset:60.0]];
+        [[(CPTXYAxisSet *) [graph axisSet] xAxis] setAxisConstraints:[CPTConstraints constraintWithLowerOffset:60.0]];
+
         [view setHostedGraph:graph];
         
         [self setGraphView:view];
-        
+
         plotsCount = 0;
         _plots = [NSMutableDictionary dictionary];
     }
@@ -70,11 +80,11 @@
     return graph;
 }
 
-- (void)addPlot:(NSArray *)plotData {
+- (void)addPlot:(NSArray *)plotData withColor:(CPTColor *)_color {
     NSNumber *plotIdentificator = [NSNumber numberWithInt:plotsCount];
     [_plots setObject:plotData forKey:plotIdentificator];
     [[_graphView hostedGraph] addPlot:[self createPlotWithIdentifier:plotIdentificator
-                                                            andColor:RED]];
+                                                            andColor:_color]];
     plotsCount++;
 }
 
@@ -93,8 +103,7 @@
     return plot;
 }
 
-
-- (void)redraw {
+- (void)cleenup {
     for (int i = 0; i < plotsCount; i++) {
         [[_graphView hostedGraph] removePlotWithIdentifier:[NSNumber numberWithInt:i]];
     }

@@ -46,8 +46,15 @@
     [_evaluator evaluateForCount:elementsCount];
     [[self tfD]  setStringValue:[[NSNumber numberWithFloat:[_evaluator d]]  stringValue]];
     [[self tfMO] setStringValue:[[NSNumber numberWithFloat:[_evaluator mo]] stringValue]];
-    [_plotDelegate redraw];
-    [_plotDelegate addPlot:[_evaluator sampleGraphData]];
+
+    [_plotDelegate cleenup];
+
+    /*
+    * добавляем три графика расчетной дисперсии и ее "коридора"
+    * */
+    [_plotDelegate addPlot:[_evaluator sampleGraphData] withColor:RED];
+    [_plotDelegate addPlot:[_evaluator sampleGraphDownEdge] withColor:BLUE];
+    [_plotDelegate addPlot:[_evaluator sampleGraphUpEdge] withColor:BLUE];
 }
 
 @end
