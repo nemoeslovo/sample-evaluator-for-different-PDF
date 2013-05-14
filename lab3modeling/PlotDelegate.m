@@ -82,9 +82,9 @@
                                     andColor:(CPTColor *)color {
     CPTScatterPlot *plot = [[CPTScatterPlot alloc] init];
 
-    plot.dataSource = self;
-    plot.identifier = ident;
-    plot.interpolation = CPTScatterPlotInterpolationCurved;
+    plot.dataSource    = self;
+    plot.identifier    = ident;
+    plot.interpolation = CPTScatterPlotInterpolationStepped;
 
     CPTMutableLineStyle *lineStyle = [plot.dataLineStyle mutableCopy];
     lineStyle.lineColor = color;
@@ -101,7 +101,9 @@
 }
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
-    return 10;
+    NSNumber *key      = [plot identifier];
+    NSArray  *plotData = [_plots objectForKey:key];
+    return [plotData count];
 }
 
 - (NSNumber *)numberForPlot:(CPTPlot *)plot
@@ -109,7 +111,7 @@
                 recordIndex:(NSUInteger)index {
 
     NSNumber *plotIdentifer = [plot identifier];
-    NSArray *plotData = [_plots objectForKey:plotIdentifer];
+    NSArray  *plotData = [_plots objectForKey:plotIdentifer];
 
     NSArray  *point  = plotData[index];
     NSNumber *result = point[fieldEnum];
