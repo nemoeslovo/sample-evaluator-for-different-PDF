@@ -20,6 +20,9 @@
 @property (weak)   IBOutlet NSTextField         *tfMO;
 @property (weak)   IBOutlet NSTextField         *tfD;
 
+@property (weak)   IBOutlet NSTextField         *analiticD;
+@property (weak)   IBOutlet NSTextField         *analitycMO;
+
 - (IBAction)onSampleClick:(id)sender;
 
 @end

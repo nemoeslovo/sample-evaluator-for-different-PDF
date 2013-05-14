@@ -39,10 +39,6 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     NSArray *_sampleGraphUpEdge;
 }
 
-static NSArray *idealSampleGraphData;
-static CGFloat  idealSampleMO;
-static CGFloat  idealSampleD;
-
 @synthesize mo = _mo;
 @synthesize d  = _d;
 
@@ -59,11 +55,6 @@ static CGFloat  idealSampleD;
     if (self) {
         _range = range;
         [self setPdfFunction:pdfFunction];
-
-        NSArray *idealSample      = [self evaluateSampleForCount:IDEAL_SAMPLE_COUNT];
-        idealSampleMO             = [self evaluateMOforSample:idealSample];
-        idealSampleD              = [self evaluateDForSample:idealSample andMO:idealSampleMO];
-        idealSampleGraphData      = [self formSampleGraphData:idealSample];
     }
     return self;
 }
