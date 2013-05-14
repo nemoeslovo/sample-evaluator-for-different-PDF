@@ -17,6 +17,8 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 
 @interface TLEvaluator ()
 
+- (id)initWithPDF:(PdfFunction)pdfFunction andRange:(NSPoint)range;
+
 - (CGFloat)evaluateDForSample:(NSArray *)sample andMO:(CGFloat)mo;
 - (CGFloat)evaluateMOforSample:(NSArray *)sample;
 - (NSArray *)elevateSampleForCount:(NSInteger)sampleCount;

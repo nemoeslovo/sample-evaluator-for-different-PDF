@@ -29,7 +29,6 @@ static const inline CGFloat _acot(CGFloat number) {
 
 + (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSPoint)range;
 
-- (id)initWithPDF:(PdfFunction)pdfFunction andRange:(NSPoint)range;
 - (void)evaluateForCount:(NSInteger)i;
 
 @end
