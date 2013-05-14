@@ -15,13 +15,17 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 #define randomInRange(min, max) _randomInRange(min, max)
 
 
+#define IDEAL_SAMPLE_COUNT 99999
+
 @interface TLEvaluator ()
 
 - (id)initWithPDF:(PdfFunction)pdfFunction andRange:(NSPoint)range;
 
+- (NSArray *)evaluateSampleForDispersion:(CGFloat)d graphData:(NSArray *)data isDownEdge:(BOOL)isDownEdge;
+
 - (CGFloat)evaluateDForSample:(NSArray *)sample andMO:(CGFloat)mo;
 - (CGFloat)evaluateMOforSample:(NSArray *)sample;
-- (NSArray *)elevateSampleForCount:(NSInteger)sampleCount;
+- (NSArray *)evaluateSampleForCount:(NSInteger)sampleCount;
 
 @end
 
@@ -31,10 +35,20 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 @private
     CGFloat _mo;
     CGFloat _d;
+    NSArray *_sampleGraphDownEdge;
+    NSArray *_sampleGraphUpEdge;
 }
+
+static NSArray *idealSampleGraphData;
+static CGFloat  idealSampleMO;
+static CGFloat  idealSampleD;
 
 @synthesize mo = _mo;
 @synthesize d  = _d;
+
+@synthesize sampleGraphDownEdge = _sampleGraphDownEdge;
+
+@synthesize sampleGraphUpEdge = _sampleGraphUpEdge;
 
 + (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSPoint)range {
     return [[self alloc] initWithPDF:pdfFunction andRange:range];
@@ -45,16 +59,45 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     if (self) {
         _range = range;
         [self setPdfFunction:pdfFunction];
+
+        NSArray *idealSample      = [self evaluateSampleForCount:IDEAL_SAMPLE_COUNT];
+        idealSampleMO             = [self evaluateMOforSample:idealSample];
+        idealSampleD              = [self evaluateDForSample:idealSample andMO:idealSampleMO];
+        idealSampleGraphData      = [self formSampleGraphData:idealSample];
     }
     return self;
 }
 
 - (void)evaluateForCount:(NSInteger)elementsCount {
-    _sample           = [self elevateSampleForCount:elementsCount];
-    [self logSample:_sample];
-    _mo               = [self evaluateMOforSample:[self sample]];
-    _d                = [self evaluateDForSample:[self sample] andMO:[self mo]];
-    _sampleGraphData  = [self formSampleGraphData:_sample];
+    _sample              = [self evaluateSampleForCount:elementsCount];
+//    [self logSample:_sample];
+    _mo                  = [self evaluateMOforSample:[self sample]];
+    _d                   = [self evaluateDForSample:[self sample] andMO:[self mo]];
+    _sampleGraphData     = [self formSampleGraphData:_sample];
+
+    _sampleGraphDownEdge = [self evaluateSampleForDispersion:_d
+                                                   graphData:_sampleGraphData
+                                                  isDownEdge:YES];
+    _sampleGraphUpEdge   = [self evaluateSampleForDispersion:_d
+                                                   graphData:_sampleGraphData
+                                                  isDownEdge:NO];
+}
+
+- (NSArray *)evaluateSampleForDispersion:(CGFloat)d
+                               graphData:(NSArray *)data
+                              isDownEdge:(BOOL)isDownEdge {
+    NSMutableArray *newSample = [NSMutableArray arrayWithCapacity:[data count]];
+    for (NSArray *xy in data) {
+        CGFloat step = d;
+        if (isDownEdge) {
+            step *= -1;
+        }
+        CGFloat newY = [xy[1] floatValue] + step;
+        NSArray *correctedPoint = [self formArrayWithX:xy[0] andY:[NSNumber numberWithFloat:newY]];
+        [newSample addObject:correctedPoint];
+    }
+
+    return newSample;
 }
 
 - (NSArray *)formSampleGraphData:(NSArray *)array {
@@ -65,12 +108,16 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     CGFloat nu = 1/(CGFloat)[sortedArray count];
     CGFloat f  = nu;
     for (NSNumber *number in sortedArray) {
-        NSArray *point = [NSArray arrayWithObjects:number, [NSNumber numberWithFloat:f], nil];
+        NSArray *point = [self formArrayWithX:number andY:[NSNumber numberWithFloat:f]];
         f += nu;
         [graphData addObject:point];
     }
 
     return graphData;
+}
+
+- (NSArray *)formArrayWithX:(NSNumber *)_x andY:(NSNumber *)_y {
+    return [NSArray arrayWithObjects:_x, _y, nil];
 }
 
 - (NSArray *)sortArrayAscending:(NSArray *)_array {
@@ -83,7 +130,6 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
             return NSOrderedAscending;
         }
     }];
-    [self logSample:sorted];
     return sorted;
 }
 
@@ -114,7 +160,7 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     return mo;
 }
 
-- (NSArray *)elevateSampleForCount:(NSInteger)sampleCount {
+- (NSArray *)evaluateSampleForCount:(NSInteger)sampleCount {
     NSMutableArray *sample = [NSMutableArray arrayWithCapacity:sampleCount];
     for (int i = 0; i < sampleCount; i++) {
         CGFloat simpleRandom        = randomInRange(_range.x, _range.y);

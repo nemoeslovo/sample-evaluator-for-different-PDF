@@ -26,6 +26,9 @@ static const inline CGFloat _acot(CGFloat number) {
 @property(nonatomic)           NSPoint     range;
 
 @property(nonatomic, strong)   NSArray     *sampleGraphData;
+@property(nonatomic, strong)   NSArray     *sampleGraphDownEdge;
+@property(nonatomic, strong)   NSArray     *sampleGraphUpEdge;
+
 
 + (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSPoint)range;
 
