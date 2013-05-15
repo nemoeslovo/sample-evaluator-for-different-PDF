@@ -25,8 +25,10 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 
-    //задаем предварительно расчитанную функцию плотности распределения
-    //вероятности (the probability density function)
+    /*
+    * задаем предварительно расчитанную функцию плотности распределения
+    * вероятности (the probability density function)
+    * */
     PdfFunction pdf = ^(CGFloat number) {
         CGFloat result = acot(1 - number) + M_PI_4;
         return result;
@@ -70,6 +72,10 @@
     * */
     [_plotDelegate addPlot:_idealeSampleGraphData
                  withColor:GREEN
+                 isStepped:NO];
+
+    [_plotDelegate addPlot:[_evaluator statisticsCDF]
+                 withColor:RED
                  isStepped:NO];
 }
 

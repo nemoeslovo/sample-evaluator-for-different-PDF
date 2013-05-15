@@ -23,6 +23,8 @@
 @property (weak)   IBOutlet NSTextField         *analiticD;
 @property (weak)   IBOutlet NSTextField         *analitycMO;
 
+@property (weak) IBOutlet NSTextField *isConvergence;
+
 - (IBAction)onSampleClick:(id)sender;
 
 @end

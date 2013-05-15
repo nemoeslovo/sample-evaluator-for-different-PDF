@@ -34,4 +34,5 @@ static const inline CGFloat _acot(CGFloat number) {
 
 - (void)evaluateForCount:(NSInteger)i;
 
+- (NSArray *)statisticsCDF;
 @end

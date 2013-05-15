@@ -14,6 +14,11 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 }
 #define randomInRange(min, max) _randomInRange(min, max)
 
+static const inline CGFloat _sqr(CGFloat x) {
+    return x*x;
+}
+#define sqr(x) _sqr(x)
+
 
 #define IDEAL_SAMPLE_COUNT 99999
 
@@ -41,9 +46,7 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 
 @synthesize mo = _mo;
 @synthesize d  = _d;
-
 @synthesize sampleGraphDownEdge = _sampleGraphDownEdge;
-
 @synthesize sampleGraphUpEdge = _sampleGraphUpEdge;
 
 + (id)evaluatorWithPdf:(PdfFunction)pdfFunction andRange:(NSPoint)range {
@@ -61,7 +64,6 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
 
 - (void)evaluateForCount:(NSInteger)elementsCount {
     _sample              = [self evaluateSampleForCount:elementsCount];
-//    [self logSample:_sample];
     _mo                  = [self evaluateMOforSample:[self sample]];
     _d                   = [self evaluateDForSample:[self sample] andMO:[self mo]];
     _sampleGraphData     = [self formSampleGraphData:_sample];
@@ -74,6 +76,11 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
                                                   isDownEdge:NO];
 }
 
+/*
+* используется для формирования нижней и верхней границы
+* относительно полученной выборки. получается путем прибавления
+* или вычитания дисперсии к каждому значению выборки
+* */
 - (NSArray *)evaluateSampleForDispersion:(CGFloat)d
                                graphData:(NSArray *)data
                               isDownEdge:(BOOL)isDownEdge {
@@ -91,26 +98,35 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     return newSample;
 }
 
+/*
+* на вход принимает несортированную выборку, сортирует
+* на выход выдает массив из массивов. каждый эллементарный
+* массив состоит из 2-х эллементов - (x; y)
+* */
 - (NSArray *)formSampleGraphData:(NSArray *)array {
-    NSArray *sortedArray = [self sortArrayAscending:array];
 
-    NSMutableArray *graphData = [NSMutableArray array];
+    //сортированная выборка является аргументами по x
+    NSArray *_xArgs = [self sortArrayAscending:array];
 
-    CGFloat nu = 1/(CGFloat)[sortedArray count];
+    CGFloat nu = 1/(CGFloat)[_xArgs count];
     CGFloat f  = nu;
-    for (NSNumber *number in sortedArray) {
-        NSArray *point = [self formArrayWithX:number andY:[NSNumber numberWithFloat:f]];
+    NSMutableArray *_yArgs = [NSMutableArray arrayWithCapacity:[array count]];
+    for (NSNumber *number in _xArgs) {
+        [_yArgs addObject:[NSNumber numberWithFloat:f]];
         f += nu;
-        [graphData addObject:point];
     }
 
-    return graphData;
+    return [self formGraphFromXArray:_xArgs andYArray:_yArgs];
 }
 
 - (NSArray *)formArrayWithX:(NSNumber *)_x andY:(NSNumber *)_y {
     return [NSArray arrayWithObjects:_x, _y, nil];
 }
 
+/*
+* есть стандартная обертка возрастающей сортировки,
+* ТОДО: в последствии упразднить эту функцию
+* */
 - (NSArray *)sortArrayAscending:(NSArray *)_array {
     NSArray *sorted = [_array sortedArrayUsingComparator:^(id firstObject, id secondObject) {
         CGFloat firstNumber  = [firstObject floatValue];
@@ -124,12 +140,22 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     return sorted;
 }
 
-- (void)logSample:(NSArray *)array {
-    for (int i = 0; i<[array count]; i++) {
-        NSLog(@"sample[%d] = %f", i, [array[i] floatValue]);
+/*
+* формируем несортированную выборку
+* */
+- (NSArray *)evaluateSampleForCount:(NSInteger)sampleCount {
+    NSMutableArray *sample = [NSMutableArray arrayWithCapacity:sampleCount];
+    for (int i = 0; i < sampleCount; i++) {
+        CGFloat simpleRandom        = randomInRange(_range.x, _range.y);
+        CGFloat randomInRelateOfPDF = [self pdfFunction](simpleRandom);
+        sample[i] = [NSNumber numberWithFloat:randomInRelateOfPDF];
     }
+    return sample;
 }
 
+/*
+* считаем дисперсию
+* */
 - (CGFloat)evaluateDForSample:(NSArray *)sample andMO:(CGFloat)mo {
     CGFloat d = 0;
     for (NSNumber *number in sample) {
@@ -141,6 +167,9 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     return d;
 }
 
+/*
+* считаем мат. ожидание
+* */
 - (CGFloat)evaluateMOforSample:(NSArray *)sample {
     CGFloat mo = 0;
     for (NSNumber *number in sample) {
@@ -151,15 +180,53 @@ static const inline CGFloat _randomInRange(CGFloat smallNumber, CGFloat bigNumbe
     return mo;
 }
 
-- (NSArray *)evaluateSampleForCount:(NSInteger)sampleCount {
-    NSMutableArray *sample = [NSMutableArray arrayWithCapacity:sampleCount];
-    for (int i = 0; i < sampleCount; i++) {
-        CGFloat simpleRandom        = randomInRange(_range.x, _range.y);
-        CGFloat randomInRelateOfPDF = [self pdfFunction](simpleRandom);
-        sample[i] = [NSNumber numberWithFloat:randomInRelateOfPDF];
-    }
-    return sample;
+- (NSArray *)statisticsCDF {
+    return [self statisticsCDFforSample:[self sortArrayAscending:_sample]];
 }
+
+/*
+* расчет статистической функции распределения
+* */
+ - (NSArray *)statisticsCDFforSample:(NSArray *)sample {
+    NSMutableArray *yArgs = [NSMutableArray arrayWithCapacity:[sample count]];
+    for (NSNumber *number in sample) {
+        NSInteger y = [self statisticCDFinX:[number floatValue] andSample:sample];
+        [yArgs addObject:[NSNumber numberWithInt:y]];
+    }
+    return [self formGraphFromXArray:sample andYArray:yArgs];
+}
+
+- (NSInteger)statisticCDFinX:(CGFloat)_x andSample:(NSArray *)_sample {
+    NSInteger result = 0;
+    for (int i = 0; i < [_sample count]; i++) {
+        if (_x - [_sample[i] floatValue] >= 0) {
+            result++;
+        }
+    }
+    return result;
+}
+
+- (NSArray *)formGraphFromXArray:(NSArray *)_xArgs andYArray:(NSArray *)_yArgs {
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:[_xArgs count]];
+    for (int i = 0; i < [_xArgs count]; i++) {
+        NSArray *point = [NSArray arrayWithObjects:_xArgs[i], _yArgs[i], nil];
+        [result addObject:point];
+    }
+    return result;
+}
+
+/*
+* выводит в логи любой массив из NSNumber float
+* */
+- (void)logSample:(NSArray *)array {
+    for (int i = 0; i<[array count]; i++) {
+        NSLog(@"sample[%d] = %f", i, [array[i] floatValue]);
+    }
+}
+
+
+
+
 
 
 @end

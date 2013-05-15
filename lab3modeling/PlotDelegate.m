@@ -28,7 +28,7 @@
         * странные мэджики для задания изначальной видимости
         * графика. ТОДО: убрать хардкод
         * */
-        CPTGraph *graph = [self createGraphStartX:1.42 andStartY:-0.3 andMaxX:0.7 andMaxY:1.5];
+        CPTGraph *graph = [self createGraphStartX:1.47 andStartY:-0.3 andMaxX:0.7 andMaxY:1.5];
 
         /*
         * выравниваем координатные оси, чтобы они были видны не в
