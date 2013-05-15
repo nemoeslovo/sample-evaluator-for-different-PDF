@@ -20,7 +20,7 @@ static const inline CGFloat _sqr(CGFloat x) {
 #define sqr(x) _sqr(x)
 
 
-#define IDEAL_SAMPLE_COUNT 99999
+#define IDEAL_SAMPLE_COUNT 999999
 
 @interface TLEvaluator ()
 
