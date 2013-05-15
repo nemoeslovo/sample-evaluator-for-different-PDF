@@ -74,9 +74,17 @@
                  withColor:GREEN
                  isStepped:NO];
 
-    [_plotDelegate addPlot:[_evaluator statisticsCDF]
-                 withColor:RED
-                 isStepped:NO];
+//    [_plotDelegate addPlot:[_evaluator statisticsCDF]
+//                 withColor:RED
+//                 isStepped:NO];
+    NSString *isConvergence = @"no";
+    if ([_evaluator isConvergence]) {
+        isConvergence = @"yes";
+    }
+    [[self isConvergence] setStringValue:isConvergence];
+
+
+
 }
 
 @end

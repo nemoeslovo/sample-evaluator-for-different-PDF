@@ -188,21 +188,28 @@ static const inline CGFloat _sqr(CGFloat x) {
 * расчет статистической функции распределения
 * */
  - (NSArray *)statisticsCDFforSample:(NSArray *)sample {
-    NSMutableArray *yArgs = [NSMutableArray arrayWithCapacity:[sample count]];
-    for (NSNumber *number in sample) {
-        NSInteger y = [self statisticCDFinX:[number floatValue] andSample:sample];
-        [yArgs addObject:[NSNumber numberWithInt:y]];
-    }
-    return [self formGraphFromXArray:sample andYArray:yArgs];
+
+    return [self formGraphFromXArray:sample
+                           andYArray:[self statisticsYArgsForSample:sample]];
 }
 
-- (NSInteger)statisticCDFinX:(CGFloat)_x andSample:(NSArray *)_sample {
-    NSInteger result = 0;
+- (NSArray *)statisticsYArgsForSample:(NSArray *)sample {
+    NSMutableArray *yArgs = [NSMutableArray arrayWithCapacity:[sample count]];
+    for (NSNumber *number in sample) {
+        CGFloat y = [self statisticCDFinX:[number floatValue] andSample:sample];
+        [yArgs addObject:[NSNumber numberWithFloat:y]];
+    }
+    return yArgs;
+}
+
+- (CGFloat)statisticCDFinX:(CGFloat)_x andSample:(NSArray *)_sample {
+    CGFloat result = 0;
     for (int i = 0; i < [_sample count]; i++) {
         if (_x - [_sample[i] floatValue] >= 0) {
             result++;
         }
     }
+    result *= 1/ (CGFloat)[_sample count];
     return result;
 }
 
@@ -215,6 +222,17 @@ static const inline CGFloat _sqr(CGFloat x) {
     return result;
 }
 
+- (CGFloat)lambdaMaxBetween:(NSArray *)_first andArray:(NSArray *)_second {
+    CGFloat max = [_first[0] floatValue] - [_second[0] floatValue];
+    for (int i = 1; i < [_first count]; i++) {
+        CGFloat diff = [_first[i] floatValue] - [_second[i] floatValue];
+        if (diff > max) {
+            max = diff;
+        }
+    }
+    return max;
+}
+
 /*
 * выводит в логи любой массив из NSNumber float
 * */
@@ -224,7 +242,13 @@ static const inline CGFloat _sqr(CGFloat x) {
     }
 }
 
-
+- (BOOL)isConvergence {
+    CGFloat lambda = [self lambdaMaxBetween:[self sortArrayAscending:_sample]
+                                   andArray:[self statisticsYArgsForSample:_sample]];
+    CGFloat lambdaAndSqrt = lambda * sqrt((CGFloat)[_sample count]);
+    NSLog(@"lambda = %f, lambda*sqrt(n) = %f", lambda, lambdaAndSqrt);
+    return (lambdaAndSqrt < 1.22);
+}
 
 
 
